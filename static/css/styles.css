@@ -1,0 +1,29 @@
+trix-toolbar {
+  visibility: hidden;
+}
+
+.text-editor-bottom-row-buttons {
+  visibility: hidden;
+}
+
+#text-content-holder {
+  padding: 1rem 0;
+}
+
+.uploaded-lesson-image {
+  width: 512px;
+  height: auto;
+}
+
+.upload-image-preview {
+  width: 256px;
+  height: auto;
+  border-radius: 1rem;
+}
+
+.upload-image-content-holder {
+  display: flex;
+  flex-direction: column;
+  width: 256px;
+  gap: 16px;
+}

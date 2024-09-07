@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+<form method="POST" enctype="multipart/form-data">
+  {% csrf_token %}
+
+  <div id="blocks">
+    {% if forms %}
+      {% for form in forms %}
+        {% if form.type == "TXT" %}
+          {% include "text_block_form.html" with form=form.content id=form.id %}
+        {% elif form.type == "IMG" %}
+          {% include "upload_image_form.html" with form=form.content id=form.id image_url=form.image.url %}
+        {% elif form.type == "TBL" %}
+          {% include "table_block_form.html" with table=form.table cell_forms=form.cell_forms id=form.id width=form.table.columns height=form.table.rows %}
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+  </div>
+  <button type="submit">Save and Quit</button>
+  </form>
+
+  <span>
+    <button 
+      hx-get="{% url "new_block" lesson_id=lesson.id %}"
+      hx-target="#blocks"
+      hx-swap="beforeend"
+      name="type" 
+      value="TXT">
+      New Text Block
+    </button>
+    <button 
+      hx-get="{% url "new_block" lesson_id=lesson.id %}"
+      hx-target="#blocks"
+      hx-swap="beforeend"
+      name="type" 
+      value="IMG">
+      New Image
+    </button>
+    <button 
+      hx-get="{% url "new_block" lesson_id=lesson.id %}"
+      hx-target="#blocks"
+      hx-swap="beforeend"
+      name="type" 
+      value="TBL">
+      New Table
+    </button>
+  </span>
+
+{% endblock content %}

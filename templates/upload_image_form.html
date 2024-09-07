@@ -1,0 +1,23 @@
+{% load widget_tweaks %}
+
+<div 
+  id="upload-image-content-holder"
+  class="upload-image-content-holder"
+  x-data="{imageUpload: new ImageUpload()}"
+  x-init="() => { 
+    imageUpload.setIsFilledField({{id}});
+    imageUpload.setPreviewImage({{id}});
+    imageUpload.setUploadField({{id}});
+  }">
+  {% render_field form.caption %}
+  <img src="{{image_url}}" alt="Image Upload Preview" class="upload-image-preview" id="preview-image-{{id}}">
+  {% render_field form.image %}
+  {% render_field form.is_filled %}
+  <span>
+    <button 
+      hx-delete="{% url "remove_block" lesson_id=lesson.id content_block_id=id %}" 
+      hx-target="closest #upload-image-content-holder">
+      Remove
+    </button>
+  </span>
+</div>

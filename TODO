@@ -1,0 +1,2 @@
+User will click add new block with drop down selecting elemnet that will be created. This will call a django function that will 
+accept a parameter which will basically be an enum. This function will create a new 

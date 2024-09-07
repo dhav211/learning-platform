@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+  {% for c in content %}
+    {% if c.type == "TXT" %}
+      {{c.content|safe}}
+    {% elif c.type == "IMG" %}
+      <img src="{{c.content.url}}" class="uploaded-lesson-image" alt="">
+    {% endif %}
+  {% endfor %}
+{% endblock content %}

@@ -1,0 +1,19 @@
+<div id="text-content-holder"
+  x-data="{toolbar: new TextToolbar()}"
+  x-init="setTimeout(() => { 
+    toolbar.setToolbar($el);
+    toolbar.setBottomRowButtons({{id}});
+    toolbar.removeUnwantedIcons();
+  }, 25)"
+  @mouseenter="toolbar.show()"
+  @mouseleave="toolbar.hide()">
+  {{ form }}
+  {{ form.media }}
+  <span id="text-bottom-row-{{id}}" class="text-editor-bottom-row-buttons">
+    <button 
+      hx-delete="{% url "remove_block" lesson_id=lesson.id content_block_id=id %}" 
+      hx-target="closest #text-content-holder">
+      Remove
+    </button>
+  </span>
+</div>

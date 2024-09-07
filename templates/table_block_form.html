@@ -1,0 +1,19 @@
+<form>
+  ----
+  <p>{{width}}</p>
+  <p>{{height}}</p>
+  ----
+  <span>
+    <label for="row">Rows</label>
+    <input type="number" id="row" name="row" min="0" max="30" value={{table.rows}}>
+    <label for="col">Columns</label>
+    <input type="number" id="col" name="col" min="0" max="10" value={{table.columns}}>
+    <button 
+      hx-post="{% url "change_table" lesson_id=lesson.id content_block_id=id %}"
+      hx-target="next #content-block-table">
+      Set Size
+    </button>
+  </span>
+  <br>
+  {% include "table_creation.html" with cell_forms=cell_forms %}
+</form>
