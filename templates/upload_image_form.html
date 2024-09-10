@@ -9,10 +9,10 @@
     imageUpload.setPreviewImage({{id}});
     imageUpload.setUploadField({{id}});
   }">
-  {% render_field form.caption %}
+  {% render_field content.caption %}
   <img src="{{image_url}}" alt="Image Upload Preview" class="upload-image-preview" id="preview-image-{{id}}">
-  {% render_field form.image %}
-  {% render_field form.is_filled %}
+  {% render_field content.image %}
+  {% render_field content.is_filled %}
   <span>
     <button 
       hx-delete="{% url "remove_block" lesson_id=lesson.id content_block_id=id %}" 

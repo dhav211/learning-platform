@@ -10,11 +10,11 @@
     {% if forms %}
       {% for form in forms %}
         {% if form.type == "TXT" %}
-          {% include "text_block_form.html" with form=form.content id=form.id %}
+          {% include "text_block_form.html" with content=form.content id=form.id %}
         {% elif form.type == "IMG" %}
-          {% include "upload_image_form.html" with form=form.content id=form.id image_url=form.image.url %}
+          {% include "upload_image_form.html" with content=form.content id=form.id image_url=form.image_url %}
         {% elif form.type == "TBL" %}
-          {% include "table_block_form.html" with table=form.table cell_forms=form.cell_forms id=form.id width=form.table.columns height=form.table.rows %}
+          {% include "table_block_form.html" with table=form.table cell_forms=form.cell_forms id=form.id %}
         {% endif %}
       {% endfor %}
     {% endif %}

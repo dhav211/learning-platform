@@ -1,8 +1,4 @@
-<form>
-  ----
-  <p>{{width}}</p>
-  <p>{{height}}</p>
-  ----
+<form id="table-content-holder">
   <span>
     <label for="row">Rows</label>
     <input type="number" id="row" name="row" min="0" max="30" value={{table.rows}}>
@@ -16,4 +12,9 @@
   </span>
   <br>
   {% include "table_creation.html" with cell_forms=cell_forms %}
+  <button 
+    hx-delete="{% url "remove_block" lesson_id=lesson.id content_block_id=id %}" 
+    hx-target="closest #table-content-holder">
+    Remove
+  </button>
 </form>

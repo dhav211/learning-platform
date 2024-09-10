@@ -1,5 +1,5 @@
 from django.urls import path
-from lessons import views
+from lessons.views import views
 
 urlpatterns = [
     path('<int:lesson_id>/', views.show_lesson, name="show_lesson"),

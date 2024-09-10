@@ -1,8 +1,13 @@
 <div id="content-block-table">
   {% if cell_forms|length > 0 %}
-    <p>It's table time!!</p>
     <table>
-
+      {% for row in cell_forms %}
+        <tr>
+          {% for cell in row %}
+            <td>{{cell}}</td>
+          {% endfor %}
+        </tr>
+      {% endfor %}
     </table>
   {% else %}
     There is nothing in this table, add something!!

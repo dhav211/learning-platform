@@ -7,8 +7,8 @@
   }, 25)"
   @mouseenter="toolbar.show()"
   @mouseleave="toolbar.hide()">
-  {{ form }}
-  {{ form.media }}
+  {{ content }}
+  {{ content.media }}
   <span id="text-bottom-row-{{id}}" class="text-editor-bottom-row-buttons">
     <button 
       hx-delete="{% url "remove_block" lesson_id=lesson.id content_block_id=id %}" 
