@@ -18,6 +18,15 @@ def show_lesson(request, lesson_id):
         content.append({"type": "TXT", "content": content_block.text.text})
       elif content_block.content_type == "IMG":
         content.append({"type": "IMG", "content": content_block.image.image})
+      elif content_block.content_type == "TBL":
+        cells = []
+        for i in range(0, content_block.table.rows):
+          row = content_block.table.cells.filter(row=i).order_by("column")
+          row_forms = []
+          for cell in row:
+            row_forms.append(cell)
+          cells.append(row_forms)
+        content.append({"type": "TBL", "content": cells, "rows": content_block.table.rows, "columns": content_block.table.columns})
 
   return render(request, "lesson.html", {"content": content})
 
@@ -29,6 +38,7 @@ def lesson_creation(request, lesson_id):
     Since the forms need TODO write the rest
     """
     forms = [None] * lesson.content.count() # list will be filled based on contents position
+    table_amount = 0
 
     if lesson.content.exists:
       for content_block in lesson.content.all().order_by("position"):
@@ -37,7 +47,8 @@ def lesson_creation(request, lesson_id):
         elif content_block.content_type == "IMG":
           forms.append(ImageBlockView.get_form(content_block, lesson))
         elif content_block.content_type == "TBL":
-          forms.append(TableBlockView.get_form(content_block, lesson))
+          forms.append(TableBlockView.get_form(content_block, lesson, table_amount))
+          table_amount +=1
   
     data = {
       "lesson": lesson,
@@ -65,6 +76,11 @@ def lesson_creation(request, lesson_id):
       if form_post is not None:
         return form_post
     
+    table_contents = lesson.content.filter(content_type="TBL")
+    if len(table_contents) > 0:
+      form_post = TableBlockView.post_form(request, table_contents)
+      if form_post is not None:
+        return form_post
 
     
     return redirect("show_lesson", lesson_id)
@@ -106,58 +122,15 @@ def remove_block(request, lesson_id, content_block_id):
 
   return HttpResponse()
 
-#TODO this will be called update block and will work similarly as previous method where it checks the type and called the
-#correct method. FOr now this may one work with tables, but whateve
-def change_table(request, lesson_id, content_block_id):
-  logger.info(request.POST)
+def update_block(request, lesson_id, content_block_id):
   lesson = get_object_or_404(Lesson, id=lesson_id)
   lesson_content = get_object_or_404(LessonContent, id=content_block_id)
+  render_data = {}
 
-  initial_cells = []
-  for i in range(0, lesson_content.table.rows):
-    initial_cells.append(lesson_content.table.cells.filter(row=i).order_by("column"))
+  if lesson_content.content_type == "TBL":
+    render_data = {
+      "template": "table_creation.html",
+      "data": TableBlockView.change_table_size(request, lesson_content, lesson)
+    }
 
-  cell_forms = [] # These are the inputted form values
-
-  # TODO check the POST request and see where the cell forms come into play
-  
-  initial_column_size = lesson_content.table.columns
-  initial_row_size = lesson_content.table.rows
-  new_column_size = int(request.POST.get('row'))
-  new_row_size = int(request.POST.get('col'))
-
-  updated_table_difference = (new_column_size * new_row_size) - (initial_row_size * initial_column_size)
-
-  for x in range(0, new_column_size):
-    for y in range(0, new_row_size):
-      if updated_table_difference > 0: # Table is growing in size
-        if x >= initial_row_size or y >= initial_column_size:
-          # Create new new table cells that will be added to the database
-          new_cell = TableCell()
-          new_cell.column = x
-          new_cell.row = y
-          new_cell.save()
-          lesson_content.table.cells.add(new_cell)
-          pass
-        else:
-          #save the cell with the forms data
-          pass
-      elif updated_table_difference < 0: # Table is shrinking
-        pass
-      else: # No changeds to the table, just save
-        pass
-    
-  lesson_content.table.rows = new_row_size
-  lesson_content.table.columns = new_column_size
-  lesson_content.table.save()
-
-  # Order all the cells and turn them into forms to be fed to the template
-  updated_cell_forms = []
-  for i in range(0, lesson_content.table.rows):
-    row = lesson_content.table.cells.filter(row=i).order_by("column")
-    row_forms = []
-    for cell in row:
-      row_forms.append(TableCellForm(instance=cell, auto_id=f"{cell.id}_%s"))
-    updated_cell_forms.append(row_forms)
-
-  return render(request, "table_creation.html", {"cell_forms": updated_cell_forms})
+  return render(request, render_data["template"], render_data["data"])

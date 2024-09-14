@@ -25,7 +25,7 @@ class UploadedImageBlockForm(ModelForm):
 class TableBlockForm(ModelForm):
   class Meta:
     model = TableBlock
-    fields = ["cells"]
+    fields = ["rows", "columns"]
 
 class TableCellForm(ModelForm):
   def __init__(self, *args, **kwargs):

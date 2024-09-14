@@ -6,6 +6,16 @@
       {{c.content|safe}}
     {% elif c.type == "IMG" %}
       <img src="{{c.content.url}}" class="uploaded-lesson-image" alt="">
+    {% elif c.type == "TBL" %}
+      <table>
+        {% for row in c.content %}
+          <tr>
+            {% for cell in row %}
+              <td>{{cell.data}}</td>
+            {% endfor %}
+          </tr>
+        {% endfor %}
+      </table>
     {% endif %}
   {% endfor %}
 {% endblock content %}

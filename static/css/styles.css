@@ -27,3 +27,20 @@ trix-toolbar {
   width: 256px;
   gap: 16px;
 }
+
+.test-cell {
+  border: solid;
+  margin: 8px;
+}
+
+table,
+th,
+td {
+  border: 1px solid;
+}
+
+th,
+td {
+  min-width: 64px;
+  height: 1rem;
+}

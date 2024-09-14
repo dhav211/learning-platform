@@ -14,7 +14,7 @@
         {% elif form.type == "IMG" %}
           {% include "upload_image_form.html" with content=form.content id=form.id image_url=form.image_url %}
         {% elif form.type == "TBL" %}
-          {% include "table_block_form.html" with table=form.table cell_forms=form.cell_forms id=form.id %}
+          {% include "table_block_form.html" with content=form.content cell_forms=form.cell_forms id=form.id number=form.number %}
         {% endif %}
       {% endfor %}
     {% endif %}
